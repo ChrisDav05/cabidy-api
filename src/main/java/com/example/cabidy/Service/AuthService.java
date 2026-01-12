@@ -1,5 +1,5 @@
 package com.example.cabidy.Service;
 
-public class AythService {
+public class AuthService {
     
 }

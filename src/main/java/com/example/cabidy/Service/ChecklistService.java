@@ -1,6 +1,7 @@
 package com.example.cabidy.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -21,20 +22,29 @@ public class ChecklistService {
         this.vehicleRepo = vehicleRepo;
     }
 
-    public Checklist criar(UUID vehicleId) {
-        Vehicle v = vehicleRepo.findById(vehicleId).orElseThrow();
+    public Checklist create(UUID vehicleId) {
+        Vehicle vehicle = vehicleRepo.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
 
-        Checklist c = new Checklist();
-        c.setVehicle(v);
-        c.setCriadoEm(LocalDateTime.now());
+        Checklist checklist = new Checklist();
+        checklist.setVehicle(vehicle);
+        checklist.setCriadoEm(LocalDateTime.now());
+        checklist.setAssinadoCliente(false);
+        checklist.setAssinadoTecnico(false);
 
-        return repo.save(c);
+        return repo.save(checklist);
     }
 
-    public Checklist finalizar(UUID id) {
-        Checklist c = repo.findById(id).orElseThrow();
-        c.setFinalizadoEm(LocalDateTime.now());
-        return repo.save(c);
+    public Checklist finish(UUID id) {
+        Checklist checklist = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Checklist não encontrado"));
+
+        checklist.setFinalizadoEm(LocalDateTime.now());
+        return repo.save(checklist);
     }
+
+    public List<Checklist> list() {
+        return repo.findAll();
+    }
+
 }
-

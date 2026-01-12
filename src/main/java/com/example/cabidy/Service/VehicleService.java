@@ -19,30 +19,33 @@ public class VehicleService {
         this.repo = repo;
     }
 
-    // 🔹 CREATE usando DTO
     public Vehicle create(VehicleCreateDTO dto) {
-
         Vehicle vehicle = new Vehicle();
         vehicle.setModelo(dto.getModelo());
         vehicle.setPlaca(dto.getPlaca());
         vehicle.setChassi(dto.getChassi());
         vehicle.setCliente(dto.getCliente());
-
         vehicle.setStatus(VehicleStatus.EM_INSPECAO);
 
         return repo.save(vehicle);
     }
 
-    // 🔹 LIST
     public List<Vehicle> list() {
         return repo.findAll();
     }
 
-    // 🔹 UPDATE STATUS
-    public Vehicle updateStatus(UUID id, VehicleStatus status) {
-        Vehicle vehicle = repo.findById(id)
+    public Vehicle findById(UUID id) {
+        return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+    }
 
+    public Vehicle findByPlaca(String placa) {
+        return repo.findByPlaca(placa)
+                .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+    }
+
+    public Vehicle updateStatus(UUID id, VehicleStatus status) {
+        Vehicle vehicle = findById(id);
         vehicle.setStatus(status);
         return repo.save(vehicle);
     }

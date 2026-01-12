@@ -81,6 +81,10 @@ public class Vehicle {
         this.cliente = cliente;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
 }
 
 

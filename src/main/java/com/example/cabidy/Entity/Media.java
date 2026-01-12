@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+// Acho que podemos remover a func de media
+
 @Entity
 @Table(name = "media")
 public class Media {
