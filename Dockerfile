@@ -1,24 +1,18 @@
-# Estágio 1: Build (Usando Java 21 estável)
+# Estágio 1: Build
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-
-# Copia dependências
 COPY pom.xml .
 RUN mvn dependency:go-offline
-
-# Copia código e compila
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Estágio 2: Runtime (Usando a imagem oficial do Java 21)
-FROM eclipse-temurin:21-jre-alpine
+# Estágio 2: Runtime (Trocamos Alpine pela estável baseada em Debian)
+FROM eclipse-temurin:21-jre
 WORKDIR /app
-
-# Copia o JAR do build
 COPY --from=build /app/target/*.jar app.jar
 
-# Define a porta do Render e limite de memória
+# Expõe a porta que o Render usa
 EXPOSE 8080
 
-# Otimização de memória para o plano free do Render
-ENTRYPOINT ["java", "-Xmx400m", "-jar", "app.jar"]
+# Usamos o shell form para garantir que as variáveis de ambiente JAVA_OPTS sejam lidas
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Xmx400m -jar app.jar"]
