@@ -3,6 +3,7 @@ package com.example.cabidy.Dtos.Checklist;
 import java.util.UUID;
 
 public class CreateChecklistDTO {
+
     private UUID vehicleId;
 
     public UUID getVehicleId() {
@@ -13,3 +14,4 @@ public class CreateChecklistDTO {
         this.vehicleId = vehicleId;
     }
 }
+

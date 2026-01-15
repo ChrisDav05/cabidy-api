@@ -3,6 +3,8 @@ package com.example.cabidy.Dtos.Checklist;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.example.cabidy.Entity.Checklist;
+
 public class ChecklistResponseDTO {
 
     private UUID id;
@@ -18,8 +20,7 @@ public class ChecklistResponseDTO {
             LocalDateTime criadoEm,
             LocalDateTime finalizadoEm,
             boolean assinadoTecnico,
-            boolean assinadoCliente
-    ) {
+            boolean assinadoCliente) {
         this.id = id;
         this.vehicleId = vehicleId;
         this.criadoEm = criadoEm;
@@ -50,5 +51,15 @@ public class ChecklistResponseDTO {
 
     public boolean isAssinadoCliente() {
         return assinadoCliente;
+    }
+
+    public static ChecklistResponseDTO fromEntity(Checklist checklist) {
+        return new ChecklistResponseDTO(
+                checklist.getId(),
+                checklist.getVehicle().getId(),
+                checklist.getCriadoEm(),
+                checklist.getFinalizadoEm(),
+                checklist.isAssinadoTecnico(),
+                checklist.isAssinadoCliente());
     }
 }
